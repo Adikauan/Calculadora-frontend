@@ -64,10 +64,7 @@ function App() {
 
   function inputValue(e: any) {
     let value = e.target.value
-    if (display === 'error') {
-      setDisplay(0)
-    }
-    setDisplay(display == 0 ? value : display + value)
+    setDisplay(display == 0 || display === 'error' ? value : display + value)
   }
 
   function handlePercent() {
