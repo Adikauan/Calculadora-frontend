@@ -1,0 +1,293 @@
+import './App.css';
+import './styles/buttonStyles'
+import Logo from './assets/logo-icon.svg';
+import PlusMinus from './assets/buttons/plus-minus-icon.png'
+import PercentIcon from '@mui/icons-material/Percent';
+import Divide from './assets/buttons/divide-icon.png'
+import CloseIcon from '@mui/icons-material/Close';
+import RemoveIcon from '@mui/icons-material/Remove';
+import Equal from './assets/buttons/equal-icon.png'
+import MenuIcon from '@mui/icons-material/Menu';
+import AddIcon from '@mui/icons-material/Add';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Button, Drawer, IconButton } from '@mui/material';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import CircularProgress from '@mui/material/CircularProgress';
+import ICalculate from './Interfaces/ICalculate';
+
+function App() {
+  const buttonStyle1 = {
+    "&.MuiButton-root": {
+      width: '80px',
+      height: '80px',
+      backgroundColor: '#0D7FA9'
+    },
+    "&.MuiButton-text": {
+      font: 'Roboto',
+      color: "white",
+      fontSize: '28px'
+    }
+  };
+
+  const buttonStyle2 = {
+    "&.MuiButton-root": {
+      width: '80px',
+      height: '80px',
+      backgroundColor: '#FF6869'
+    },
+    "&.MuiButton-text": {
+      font: 'Roboto',
+      color: "white",
+      size: '28px'
+    }
+  };
+
+  const buttonStyle3 = {
+    "&.MuiButton-root": {
+      width: '80px',
+      height: '80px',
+      backgroundColor: '#86CE84'
+    },
+    "&.MuiButton-text": {
+      font: 'Roboto',
+      color: "white",
+      size: '28px'
+    }
+  };
+  const buttonStyle4 = {
+    "&.MuiButton-root": {
+      width: '80px',
+      height: '80px',
+      backgroundColor: '#0B7197'
+    },
+    "&.MuiButton-text": {
+      font: 'Roboto',
+      color: "white",
+      fontSize: '28px'
+    }
+  };
+
+  const buttonStyle5 = {
+    "&.MuiButton-root": {
+      width: '180px',
+      height: '80px',
+      backgroundColor: '#0B7197'
+    },
+    "&.MuiButton-text": {
+      font: 'Roboto',
+      color: "white",
+      fontSize: '28px'
+    }
+  };
+
+  const buttonStyle6 = {
+    "&.MuiButton-root": {
+      width: '385px',
+      height: '60px',
+      backgroundColor: '#0B7197'
+    },
+    "&.MuiButton-text": {
+      font: 'Roboto',
+      color: "white",
+      fontSize: '20px'
+    }
+  };
+  const [open, setOpen] = useState(false);
+  const [historyClicked, setHistoryClicked] = useState(false)
+  const [display, setDisplay] = useState<any>(0)
+  const [number, setNumber] = useState(0)
+  const [operation, setOperation] = useState('')
+  const [histTransform, setHistTransform] = useState(false)
+  const [history, setHistory] = useState<ICalculate[]>([]);
+  const [showProgress, setShowProgress] = useState(true);
+
+  useEffect(() => {
+    getHistory()
+    console.log('history', history)
+  }, [histTransform]);
+
+  const handleButtonClick = () => {
+    setOpen(!open);
+  };
+
+  function handleHistoryClick() {
+    setHistoryClicked(!historyClicked)
+  }
+
+  function handleHistoryTransform() {
+    setHistTransform(!histTransform)
+  }
+  function getHistory() {
+    let url = 'https://localhost:7081/api/Calculator'
+    axios.get(url).then(res => {
+      setHistory(res.data.slice(0, 10))
+    }).catch(err => {
+      console.log(err)
+    })
+
+  }
+
+  useEffect(() => {
+    getHistory
+  })
+
+
+  function handleResetDisplay() {
+    setDisplay(0)
+  }
+
+  function inputValue(e: any) {
+    let value = e.target.value
+    if (display === 'error') {
+      setDisplay(0)
+    }
+    setDisplay(display == 0 && e.target.value !== ',' ? value : display + value)
+  }
+
+  function handlePorcent() {
+    setDisplay(display / 100)
+  }
+
+  function handlePlusMinus() {
+    setDisplay(typeof display === 'number' ? parseFloat(display.toString()) * -1 : display * -1)
+  }
+
+  function handleOperation(op: string) {
+    setOperation(op)
+    setNumber(display)
+    setDisplay(0)
+  }
+  function handleCalculation() {
+    let payload = {
+      firstNumber: number.toString(),
+      secondNumber: display.toString(),
+      operation: operation
+    }
+    axios.post(`https://localhost:7081/api/Calculate/Calculate`, payload)
+      .then(res => {
+        setDisplay(res.data)
+        setHistory(res.data)
+        getHistory()
+      })
+      .catch(() => {
+        setDisplay('error')
+      })
+    setOperation('')
+    setNumber(0)
+  }
+
+  return (
+    <div className='app'>
+      <header className='app-header'>
+        <div className='app-header-logo'>
+          <img src={Logo} className="App-logo" alt="logo" />
+        </div>
+        <div className='app-header-buttons'>
+          <IconButton aria-label="calc" onClick={handleButtonClick}>
+            <i className="fa-solid fa-calculator" style={{ color: "white" }}></i>
+          </IconButton>
+          <IconButton aria-label="config">
+            <SettingsIcon style={{ color: "white" }} />
+          </IconButton>
+        </div>
+      </header>
+      <div className='app-bar'>
+        <div className='app-bar-menu'>
+          <IconButton aria-label="config">
+            <MenuIcon style={{ color: "white" }} fontSize="large" />
+          </IconButton>
+        </div>
+      </div>
+      <div className='calculator'>
+        <Drawer
+          open={open}
+          onClose={() => setOpen(false)}
+          anchor="right"
+          PaperProps={{
+            sx: {
+              height: '866px',
+              width: 433,
+              top: 64,
+            },
+          }}
+        >
+          <div className="calculator-container">
+
+            <div className='calculator-container-header'>
+              <span>Calculadora</span>
+              {historyClicked ? (
+                <Button className='calculator-container-header-history'
+                  sx={{ color: 'white', backgroundColor: '#0D7FA9', textTransform: 'none', height: '20px' }}
+                  variant='text'
+                  onClick={() => {
+                    handleHistoryClick()
+                    handleHistoryTransform()
+                  }} >
+                  Histórico
+                </Button>) : (
+                <Button className='calculator-container-header-history'
+                  sx={{ color: 'white', textTransform: 'none', height: '20px' }}
+                  variant='text'
+                  onClick={() => {
+                    handleHistoryClick()
+                    handleHistoryTransform()
+                  }}
+                >
+                  Histórico
+                </Button>
+              )}
+            </div>
+            {histTransform ? (
+              <div className={`calculator-container-history ${histTransform ? 'show' : ''}`}>
+                {history?.map((calc) => (
+                  <>
+
+                    <span className='calculator-container-history-operation'> {`${calc.operation}=`}</span>
+                    <span className='calculator-container-history-result'> {calc.result}</span>
+                  </>
+                ))}
+              </div>
+            ) : (
+              <>
+
+                <div className="calculator-container-display">
+                  <p>{display}</p>
+                </div>
+                <div className='calculator-container-buttons'>
+                  <Button sx={buttonStyle1} onClick={handleResetDisplay}>AC</Button>
+                  <Button sx={buttonStyle1} onClick={handlePlusMinus}><img src={PlusMinus} /></Button>
+                  <Button sx={buttonStyle1} onClick={handlePorcent}><PercentIcon sx={{ color: 'white', fontSize: '40px' }} /></Button>
+                  <Button sx={buttonStyle2} value={'/'} onClick={() => handleOperation('/')}><img src={Divide} /></Button>
+                  <Button sx={buttonStyle4} value={7} onClick={inputValue}>7</Button>
+                  <Button sx={buttonStyle4} value={8} onClick={inputValue}>8</Button>
+                  <Button sx={buttonStyle4} value={9} onClick={inputValue}>9</Button>
+                  <Button sx={buttonStyle2} value={'*'} onClick={() => handleOperation('*')}> <CloseIcon sx={{ color: 'white', fontSize: '50px' }} /></Button>
+                  <Button sx={buttonStyle4} value={4} onClick={inputValue}>4</Button>
+                  <Button sx={buttonStyle4} value={5} onClick={inputValue}>5</Button>
+                  <Button sx={buttonStyle4} value={6} onClick={inputValue}>6</Button>
+                  <Button sx={buttonStyle2} value={'-'} onClick={() => handleOperation('-')}><RemoveIcon sx={{ color: 'white', fontSize: '50px' }} /></Button>
+                  <Button sx={buttonStyle4} value={1} onClick={inputValue}>1</Button>
+                  <Button sx={buttonStyle4} value={2} onClick={inputValue}>2</Button>
+                  <Button sx={buttonStyle4} value={3} onClick={inputValue}>3</Button>
+                  <Button sx={buttonStyle2} value={'+'} onClick={() => handleOperation('+')}> <AddIcon sx={{ color: 'white', fontSize: '50px' }} /></Button>
+                  <Button sx={buttonStyle5} value={0} onClick={inputValue} className='calculator-container-buttons-zero'>0</Button>
+                  <Button sx={buttonStyle4} value={'.'} onClick={inputValue} className='calculator-container-buttons-dot'>.</Button>
+                  <Button sx={buttonStyle3} onClick={handleCalculation} className='calculator-container-buttons-equal'><img src={Equal} /></Button>
+                </div>
+              </>
+            )}
+            <div className='calculator-container-back'>
+              <Button sx={buttonStyle6} onClick={handleButtonClick} className='calculator-container-buttons-back'>Voltar</Button>
+            </div>
+          </div>
+        </Drawer>
+      </div >
+      <footer>
+
+      </footer>
+    </div >
+  )
+}
+
+export default App;
