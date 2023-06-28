@@ -1,5 +1,5 @@
 import './App.css';
-import './styles/buttonStyles'
+import { buttonStyle1, buttonStyle2, buttonStyle3, buttonStyle4, buttonStyle5, buttonStyle6 } from './styles/buttonStyles'
 import Logo from './assets/logo-icon.svg';
 import PlusMinus from './assets/buttons/plus-minus-icon.png'
 import PercentIcon from '@mui/icons-material/Percent';
@@ -13,86 +13,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { Button, Drawer, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import CircularProgress from '@mui/material/CircularProgress';
 import ICalculate from './Interfaces/ICalculate';
 
 function App() {
-  const buttonStyle1 = {
-    "&.MuiButton-root": {
-      width: '80px',
-      height: '80px',
-      backgroundColor: '#0D7FA9'
-    },
-    "&.MuiButton-text": {
-      font: 'Roboto',
-      color: "white",
-      fontSize: '28px'
-    }
-  };
 
-  const buttonStyle2 = {
-    "&.MuiButton-root": {
-      width: '80px',
-      height: '80px',
-      backgroundColor: '#FF6869'
-    },
-    "&.MuiButton-text": {
-      font: 'Roboto',
-      color: "white",
-      size: '28px'
-    }
-  };
-
-  const buttonStyle3 = {
-    "&.MuiButton-root": {
-      width: '80px',
-      height: '80px',
-      backgroundColor: '#86CE84'
-    },
-    "&.MuiButton-text": {
-      font: 'Roboto',
-      color: "white",
-      size: '28px'
-    }
-  };
-  const buttonStyle4 = {
-    "&.MuiButton-root": {
-      width: '80px',
-      height: '80px',
-      backgroundColor: '#0B7197'
-    },
-    "&.MuiButton-text": {
-      font: 'Roboto',
-      color: "white",
-      fontSize: '28px'
-    }
-  };
-
-  const buttonStyle5 = {
-    "&.MuiButton-root": {
-      width: '180px',
-      height: '80px',
-      backgroundColor: '#0B7197'
-    },
-    "&.MuiButton-text": {
-      font: 'Roboto',
-      color: "white",
-      fontSize: '28px'
-    }
-  };
-
-  const buttonStyle6 = {
-    "&.MuiButton-root": {
-      width: '385px',
-      height: '60px',
-      backgroundColor: '#0B7197'
-    },
-    "&.MuiButton-text": {
-      font: 'Roboto',
-      color: "white",
-      fontSize: '20px'
-    }
-  };
   const [open, setOpen] = useState(false);
   const [historyClicked, setHistoryClicked] = useState(false)
   const [display, setDisplay] = useState<any>(0)
@@ -119,6 +43,7 @@ function App() {
   function handleHistoryTransform() {
     setHistTransform(!histTransform)
   }
+
   function getHistory() {
     let url = `${baseUrl}/Calculator`
     axios.get(url).then(res => {
@@ -132,7 +57,6 @@ function App() {
   useEffect(() => {
     getHistory
   })
-
 
   function handleResetDisplay() {
     setDisplay(0)
@@ -159,6 +83,7 @@ function App() {
     setNumber(display)
     setDisplay(0)
   }
+
   function handleCalculation() {
     let payload = {
       firstNumber: number.toString(),
@@ -251,7 +176,6 @@ function App() {
               </div>
             ) : (
               <>
-
                 <div className="calculator-container-display">
                   <p>{display}</p>
                 </div>
@@ -285,7 +209,6 @@ function App() {
         </Drawer>
       </div >
       <footer>
-
       </footer>
     </div >
   )

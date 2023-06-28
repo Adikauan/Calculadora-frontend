@@ -95,8 +95,8 @@
 
 .calculator-container-history {
   display: flex;
+  overflow: hidden;
   flex-direction: column;
-  overflow: auto;
   justify-content: flex-end;
   align-items: flex-end;
   font: 'normal normal normal 58px/70px Roboto';
@@ -158,5 +158,5 @@
 }
 
 .calculator-container-back {
-  margin-top: 35px;
+  margin-top: 15px;
 }
