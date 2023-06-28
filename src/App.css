@@ -95,7 +95,7 @@
 
 .calculator-container-history {
   display: flex;
-  overflow: hidden;
+  overflow-y: auto;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;

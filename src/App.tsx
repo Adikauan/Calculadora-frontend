@@ -46,7 +46,7 @@ function App() {
   function getHistory() {
     let url = `${baseUrl}/Calculator`
     axios.get(url).then(res => {
-      setHistory(res.data.slice(0, 10))
+      setHistory(res.data)
     }).catch(err => {
       console.log(err)
     })
@@ -167,8 +167,8 @@ function App() {
                 {history?.map((calc) => (
                   <>
 
-                    <span className='calculator-container-history-operation'> {`${calc.Operation}=`}</span>
-                    <span className='calculator-container-history-result'> {calc.Result}</span>
+                    <span className='calculator-container-history-operation'> {`${calc.operation}=`}</span>
+                    <span className='calculator-container-history-result'> {calc.result}</span>
                   </>
                 ))}
               </div>
