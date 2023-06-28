@@ -101,6 +101,7 @@ function App() {
   const [histTransform, setHistTransform] = useState(false)
   const [history, setHistory] = useState<ICalculate[]>([]);
   const [showProgress, setShowProgress] = useState(true);
+  const baseUrl = 'https://localhost:7081/api'
 
   useEffect(() => {
     getHistory()
@@ -119,7 +120,7 @@ function App() {
     setHistTransform(!histTransform)
   }
   function getHistory() {
-    let url = 'https://localhost:7081/api/Calculator'
+    let url = `${baseUrl}/Calculator`
     axios.get(url).then(res => {
       setHistory(res.data.slice(0, 10))
     }).catch(err => {
@@ -142,10 +143,10 @@ function App() {
     if (display === 'error') {
       setDisplay(0)
     }
-    setDisplay(display == 0 && e.target.value !== ',' ? value : display + value)
+    setDisplay(display == 0 ? value : display + value)
   }
 
-  function handlePorcent() {
+  function handlePercent() {
     setDisplay(display / 100)
   }
 
@@ -164,7 +165,7 @@ function App() {
       secondNumber: display.toString(),
       operation: operation
     }
-    axios.post(`https://localhost:7081/api/Calculate/Calculate`, payload)
+    axios.post(`${baseUrl}/Calculate/Calculate`, payload)
       .then(res => {
         setDisplay(res.data)
         setHistory(res.data)
@@ -257,7 +258,7 @@ function App() {
                 <div className='calculator-container-buttons'>
                   <Button sx={buttonStyle1} onClick={handleResetDisplay}>AC</Button>
                   <Button sx={buttonStyle1} onClick={handlePlusMinus}><img src={PlusMinus} /></Button>
-                  <Button sx={buttonStyle1} onClick={handlePorcent}><PercentIcon sx={{ color: 'white', fontSize: '40px' }} /></Button>
+                  <Button sx={buttonStyle1} onClick={handlePercent}><PercentIcon sx={{ color: 'white', fontSize: '40px' }} /></Button>
                   <Button sx={buttonStyle2} value={'/'} onClick={() => handleOperation('/')}><img src={Divide} /></Button>
                   <Button sx={buttonStyle4} value={7} onClick={inputValue}>7</Button>
                   <Button sx={buttonStyle4} value={8} onClick={inputValue}>8</Button>
