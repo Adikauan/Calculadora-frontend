@@ -24,7 +24,6 @@ function App() {
   const [operation, setOperation] = useState('')
   const [histTransform, setHistTransform] = useState(false)
   const [history, setHistory] = useState<ICalculate[]>([]);
-  const [showProgress, setShowProgress] = useState(true);
   const baseUrl = 'https://localhost:7081/api'
 
   useEffect(() => {
@@ -60,6 +59,8 @@ function App() {
 
   function handleResetDisplay() {
     setDisplay(0)
+    setNumber(0)
+    setOperation('')
   }
 
   function inputValue(e: any) {
@@ -166,8 +167,8 @@ function App() {
                 {history?.map((calc) => (
                   <>
 
-                    <span className='calculator-container-history-operation'> {`${calc.operation}=`}</span>
-                    <span className='calculator-container-history-result'> {calc.result}</span>
+                    <span className='calculator-container-history-operation'> {`${calc.Operation}=`}</span>
+                    <span className='calculator-container-history-result'> {calc.Result}</span>
                   </>
                 ))}
               </div>
@@ -194,7 +195,7 @@ function App() {
                   <Button sx={buttonStyle4} value={3} onClick={inputValue}>3</Button>
                   <Button sx={buttonStyle2} value={'+'} onClick={() => handleOperation('+')}> <AddIcon sx={{ color: 'white', fontSize: '50px' }} /></Button>
                   <Button sx={buttonStyle5} value={0} onClick={inputValue} className='calculator-container-buttons-zero'>0</Button>
-                  <Button sx={buttonStyle4} value={'.'} onClick={inputValue} className='calculator-container-buttons-dot'>.</Button>
+                  <Button sx={buttonStyle4} value={','} onClick={inputValue} className='calculator-container-buttons-dot'>,</Button>
                   <Button sx={buttonStyle3} onClick={handleCalculation} className='calculator-container-buttons-equal'><img src={Equal} /></Button>
                 </div>
               </>
