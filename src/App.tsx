@@ -65,11 +65,16 @@ function App() {
 
   function inputValue(e: any) {
     let value = e.target.value
-    setDisplay(display == 0 || display === 'error' ? value : display + value)
+    let actualDisplay = display.toString()
+    if (!(actualDisplay.includes(",") && value.toString() === ',')) {
+      setDisplay(display == 0 || display === 'error' ? value : display + value)
+    }
+
   }
 
   function handlePercent() {
-    setDisplay(display / 100)
+    let porcent = display / 100
+    setDisplay(porcent.toString().replace('.', ','))
   }
 
   function handlePlusMinus() {
