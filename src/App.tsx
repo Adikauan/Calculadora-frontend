@@ -11,7 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Button, Drawer, IconButton } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import ICalculate from './Interfaces/ICalculate';
 
@@ -25,6 +25,7 @@ function App() {
   const [histTransform, setHistTransform] = useState(false)
   const [history, setHistory] = useState<ICalculate[]>([]);
   const baseUrl = 'https://localhost:7081/api'
+
 
   useEffect(() => {
     getHistory()
@@ -64,10 +65,10 @@ function App() {
   }
 
   function inputValue(e: any) {
-    let value = e.target.value
     let actualDisplay = display.toString()
+    let value = e.target.value
     if (!(actualDisplay.includes(",") && value.toString() === ',')) {
-      setDisplay(display == 0 || display === 'error' ? value : display + value)
+      setDisplay(display == 0 || display === 'error' || actualDisplay.includes("=") ? value : display + value)
     }
 
   }
@@ -95,7 +96,7 @@ function App() {
     }
     axios.post(`${baseUrl}/Calculate/Calculate`, payload)
       .then(res => {
-        setDisplay(res.data)
+        setDisplay(`${payload.firstNumber} ${payload.operation} ${payload.secondNumber} = ${res.data}`)
         setHistory(res.data)
         getHistory()
       })
@@ -169,18 +170,21 @@ function App() {
             </div>
             {histTransform ? (
               <div className={`calculator-container-history ${histTransform ? 'show' : ''}`}>
-                {history?.map((calc) => (
-                  <>
-
-                    <span className='calculator-container-history-operation'> {`${calc.operation}=`}</span>
-                    <span className='calculator-container-history-result'> {calc.result}</span>
-                  </>
-                ))}
+                <div className='calculator-container-history-text'>
+                  {history?.map((calc) => (
+                    <>
+                      <br />
+                      <span className='calculator-container-history-operation'> {`${calc.operation}=`}</span>
+                      <br />
+                      <span className='calculator-container-history-result'> {calc.result}</span>
+                    </>
+                  ))}
+                </div>
               </div>
             ) : (
               <>
                 <div className="calculator-container-display">
-                  <p>{display}</p>
+                  <div className='calculator-container-display-text'>{display}</div>
                 </div>
                 <div className='calculator-container-buttons'>
                   <Button sx={buttonStyle1} onClick={handleResetDisplay}>AC</Button>
