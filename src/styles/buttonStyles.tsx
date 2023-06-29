@@ -65,7 +65,7 @@ export const buttonStyle5 = {
 export const buttonStyle6 = {
     "&.MuiButton-root": {
         width: '385px',
-        height: '80px',
+        height: '45px',
         backgroundColor: '#0B7197'
     },
     "&.MuiButton-text": {
