@@ -73,9 +73,12 @@ function App() {
 
   }
 
-  function handlePercent() {
-    let porcent = display / 100
-    setDisplay(porcent.toString().replace('.', ','))
+  function handlePorcent() {
+    let actualDisplay = display
+    if (!actualDisplay.includes('error')) {
+      let porcent = display / 100
+      setDisplay(porcent.toString().replace('.', ','))
+    }
   }
 
   function handlePlusMinus() {
@@ -184,12 +187,12 @@ function App() {
             ) : (
               <>
                 <div className="calculator-container-display">
-                  <div className='calculator-container-display-text'>{display}</div>
+                  <div className='calculator-container-display-text'>{display === 'error' ? display : parseFloat(display).toLocaleString('pt-BR')}</div>
                 </div>
                 <div className='calculator-container-buttons'>
                   <Button sx={buttonStyle1} onClick={handleResetDisplay}>AC</Button>
                   <Button sx={buttonStyle1} onClick={handlePlusMinus}><img src={PlusMinus} /></Button>
-                  <Button sx={buttonStyle1} onClick={handlePercent}><PercentIcon sx={{ color: 'white', fontSize: '40px' }} /></Button>
+                  <Button sx={buttonStyle1} onClick={handlePorcent}><PercentIcon sx={{ color: 'white', fontSize: '40px' }} /></Button>
                   <Button sx={buttonStyle2} value={'/'} onClick={() => handleOperation('/')}><img src={Divide} /></Button>
                   <Button sx={buttonStyle4} value={7} onClick={inputValue}>7</Button>
                   <Button sx={buttonStyle4} value={8} onClick={inputValue}>8</Button>
