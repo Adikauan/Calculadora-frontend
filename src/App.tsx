@@ -82,7 +82,17 @@ function App() {
   }
 
   function handlePlusMinus() {
-    setDisplay(typeof display === 'number' ? parseFloat(display.toString()) * -1 : display * -1)
+    if (!(display === 'error')) {
+      if (typeof display === 'number') {
+        setDisplay(display * -1)
+      }
+      else if (display.includes('-')) {
+        setDisplay(display.replace('-', ''))
+      }
+      else {
+        setDisplay(`-${display}`)
+      }
+    }
   }
 
   function handleOperation(op: string) {
@@ -187,7 +197,7 @@ function App() {
             ) : (
               <>
                 <div className="calculator-container-display">
-                  <div className='calculator-container-display-text'>{display === 'error' ? display : parseFloat(display).toLocaleString('pt-BR')}</div>
+                  <div className='calculator-container-display-text'>{display}</div>
                 </div>
                 <div className='calculator-container-buttons'>
                   <Button sx={buttonStyle1} onClick={handleResetDisplay}>AC</Button>
