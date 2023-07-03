@@ -110,7 +110,7 @@
   margin: 0;
   border-radius: 5px;
   opacity: 1;
-  max-height: 610px;
+  max-height: 645px;
   transition: height 2s ease;
 }
 
@@ -120,7 +120,7 @@
 }
 
 .calculator-container-history.show {
-  height: 610px;
+  height: 645px;
 }
 
 .calculator-container-history .calculator-container-history-operation {
