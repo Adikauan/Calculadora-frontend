@@ -107,7 +107,7 @@ function App() {
       secondNumber: display.toString(),
       operation: operation
     }
-    axios.post(`${baseUrl}/Calculate/Calculate`, payload)
+    axios.post(`${baseUrl}/Calculate/Operation`, payload)
       .then(res => {
         setDisplay(`${payload.firstNumber} ${payload.operation} ${payload.secondNumber} = ${res.data}`)
         setHistory(res.data)
